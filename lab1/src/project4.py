@@ -47,6 +47,6 @@ if __name__ == '__main__':
             img = loadmat(data_path / 'lab1.mat')['image']
         else:
             raise FileNotFoundError("Could not find lab1.npy or lab1.mat")
-        create_color_overlay(img, threshold=220)
+        create_color_overlay(img, threshold=150)
     except Exception as e:
         print(f"Main error: {str(e)}")

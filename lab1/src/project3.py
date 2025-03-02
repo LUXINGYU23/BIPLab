@@ -13,10 +13,9 @@ def process_image_scaling(img):
         x_position = 100
         original_shape = img.shape
         
-        # Increase image size and set higher DPI
         plt.rcParams['figure.dpi'] = 300
-        fig = plt.figure(figsize=(20, 7*len(N_values)))
-        gs = plt.GridSpec(len(N_values), 2, figure=fig, hspace=0.3)
+        fig = plt.figure(figsize=(18, 5*len(N_values)))
+        gs = plt.GridSpec(len(N_values), 2, figure=fig, hspace=0.15, wspace=0.12)
         
         for idx, N in enumerate(N_values):
             # Downsample and enlarge, ensure size matching
@@ -35,24 +34,24 @@ def process_image_scaling(img):
             reduced_line = reduced[:, reduced_line_index]
             enlarged_line = enlarged[:, x_position]
             
-            # Left side: image comparison
             ax1 = fig.add_subplot(gs[idx, 0])
             ax1.imshow(np.vstack([img, reduced_display, enlarged]), cmap='gray', 
-                      interpolation='nearest')  # Use nearest interpolation for clarity
-            ax1.axvline(x=x_position, color='r', linestyle='--')
+                      interpolation='nearest')
+            ax1.axvline(x=x_position, color='r', linestyle='--', linewidth=1.5)
             ax1.set_title(f'N={N}: Original (top) vs. Reduced (middle) vs. Enlarged (bottom)', 
-                         pad=20, fontsize=12)
+                         pad=10, fontsize=11)
+            ax1.set_xticks([])  
+            ax1.set_yticks([])  
             
-            # Right side: profile line comparison
             ax2 = fig.add_subplot(gs[idx, 1])
-            ax2.plot(original_line, label='Original', linewidth=2)
+            ax2.plot(original_line, label='Original', linewidth=1.8)
             ax2.plot(np.linspace(0, len(original_line)-1, len(reduced_line)), 
-                    reduced_line, label='Reduced', linestyle='--', linewidth=2)
-            ax2.plot(enlarged_line, label='Enlarged', linestyle='-.', linewidth=2)
-            ax2.legend(fontsize=10)
+                    reduced_line, label='Reduced', linestyle='--', linewidth=1.8)
+            ax2.plot(enlarged_line, label='Enlarged', linestyle='-.', linewidth=1.8)
+            ax2.legend(fontsize=9, loc='best')
             ax2.set_title(f'N={N}: X=100 Line Profile Comparison', 
-                         pad=20, fontsize=12)
-            ax2.grid(True, linestyle='--', alpha=0.7)
+                         pad=10, fontsize=11)
+            ax2.grid(True, linestyle='--', alpha=0.6)
         
         plt.tight_layout()
         output_path = os.path.join(results_dir, 'scaling_comparison_multiple.png')

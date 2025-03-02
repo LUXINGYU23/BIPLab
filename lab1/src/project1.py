@@ -33,7 +33,16 @@ def save_results(img, filename):
     try:
         results_dir = ensure_results_dir()
         output_path = os.path.join(results_dir, f'{filename}.png')
-        plt.imsave(output_path, img, cmap='gray')
+        
+        plt.figure(figsize=(8, 6))
+        plt.imshow(img, cmap='gray', extent=[0, 255, 0, 255])
+        plt.colorbar(label='Intensity')
+        plt.xlabel('X Coordinate (0-255)')
+        plt.ylabel('Y Coordinate (0-255)')
+        plt.title(f'{filename.replace("_", " ").title()}')
+        
+        plt.savefig(output_path)
+        plt.close()
         print(f"Image saved successfully: {output_path}")
     except Exception as e:
         print(f"Failed to save image: {str(e)}")
